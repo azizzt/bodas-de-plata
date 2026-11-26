@@ -10,7 +10,7 @@ Invitacion/
 ├── js/config.js            ← ⚙️ ÚNICO archivo que necesitas editar (URL del script, fecha, WhatsApp)
 ├── js/main.js              ← Cuenta regresiva, animaciones, formulario RSVP
 ├── assets/
-│   ├── og-image.png        ← Imagen de vista previa al compartir por WhatsApp (1200×630)
+│   ├── og-image.jpg        ← Imagen de vista previa al compartir por WhatsApp (1200×630)
 │   └── favicon.svg
 ├── apps-script/Code.gs     ← Backend gratuito (Google Apps Script)
 ├── sobre/
@@ -101,7 +101,7 @@ por tu dirección real:
 
 ```html
 <meta property="og:url"   content="https://TU-USUARIO.github.io/bodas-de-plata/" />
-<meta property="og:image" content="https://TU-USUARIO.github.io/bodas-de-plata/assets/og-image.png" />
+<meta property="og:image" content="https://TU-USUARIO.github.io/bodas-de-plata/assets/og-image.jpg" />
 ```
 
 > WhatsApp guarda en caché la vista previa. Haz este cambio **antes** de compartir el enlace por primera vez.
