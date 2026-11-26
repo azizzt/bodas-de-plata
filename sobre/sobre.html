@@ -21,7 +21,7 @@
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@400;500;600&display=block" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Great+Vibes&family=Montserrat:wght@500;600&display=block" rel="stylesheet" />
 
   <style>
     /* Paleta compartida con la invitación web */
@@ -46,6 +46,7 @@
     }
     body {
       font-family: "Montserrat", Arial, sans-serif;
+      font-weight: 500;               /* solo 2 pesos de Montserrat (500 y 600) para aligerar el PDF */
       background: #2B2F36;            /* solo visible en pantalla, fuera de la página */
       min-height: 100vh;
       display: grid;
@@ -61,10 +62,9 @@
       overflow: hidden;
       color: var(--ivory);
       text-align: center;
-      background:
-        radial-gradient(circle at 50% 46%, rgba(212, 181, 122, 0.18), transparent 48%),
-        radial-gradient(ellipse at 50% 115%, var(--navy-700), transparent 62%),
-        var(--navy-900);
+      /* Degradado con colores 100 % opacos: los visores de PDF lo dibujan al instante
+         (las transparencias y sombras difuminadas se convierten en imágenes pesadas). */
+      background: radial-gradient(ellipse 90% 62% at 50% 44%, #1E2D48 0%, #132443 45%, var(--navy-900) 100%);
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
       display: flex;
       flex-direction: column;
@@ -77,8 +77,8 @@
       position: absolute;
       pointer-events: none;
     }
-    .page::before { inset: 4mm; border: 0.35mm solid rgba(212, 181, 122, 0.55); }
-    .page::after  { inset: 5.4mm; border: 0.2mm solid rgba(212, 181, 122, 0.25); }
+    .page::before { inset: 4mm; border: 0.35mm solid #7A6F5A; }   /* dorado al 55 % ya mezclado con el azul */
+    .page::after  { inset: 5.4mm; border: 0.2mm solid #3D4145; }  /* dorado al 25 % ya mezclado */
 
     /* Esquinas ornamentales */
     .corner { position: absolute; width: 9mm; height: 9mm; color: var(--gold); }
@@ -117,7 +117,7 @@
       width: 84mm;
       margin: 7mm auto 0;
       text-decoration: none;
-      filter: drop-shadow(0 4mm 6mm rgba(0, 0, 0, 0.45));
+      /* Sin filter: drop-shadow → la sombra está dibujada como vector dentro del SVG */
     }
     .envelope svg { width: 100%; height: auto; display: block; }
 
@@ -146,11 +146,12 @@
       margin-top: 2.5mm;
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: 3.9mm;
+      font-weight: 600;
       color: var(--ivory);
     }
 
     .divider { margin: 6mm auto 0; width: 34mm; height: 3mm; position: relative;
-      background: linear-gradient(var(--gold), var(--gold)) center / 100% 0.25mm no-repeat; opacity: 0.8; }
+      background: linear-gradient(var(--gold), var(--gold)) center / 100% 0.25mm no-repeat; }
     .divider span { position: absolute; left: 50%; top: 50%; width: 2.2mm; height: 2.2mm;
       background: var(--navy-900); border: 0.25mm solid var(--gold); transform: translate(-50%, -50%) rotate(45deg); }
     .phrase {
@@ -178,7 +179,7 @@
       letter-spacing: 0.7mm;
       text-transform: uppercase;
       text-decoration: none;
-      box-shadow: 0 2mm 5mm rgba(212, 181, 122, 0.35);
+      border: 0.35mm solid #F1E2BE;   /* filo claro en lugar de sombra difuminada */
     }
     .cta svg { width: 4mm; height: 4mm; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .hint {
@@ -208,7 +209,7 @@
 
     <!-- Sobre cerrado con sello de lacre (todo el sobre también es un enlace) -->
     <a class="envelope js-link" href="#" aria-label="Abrir invitación">
-      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 300 214" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#FBF8F1"/>
@@ -230,23 +231,26 @@
           </radialGradient>
         </defs>
 
+        <!-- Sombra vectorial (colores opacos, sin difuminado) -->
+        <ellipse cx="150" cy="203" rx="146" ry="10" fill="#0A1629"/>
+        <ellipse cx="150" cy="202" rx="128" ry="7" fill="#07101F"/>
         <!-- Cuerpo del sobre -->
         <rect x="2" y="2" width="296" height="196" rx="6" fill="url(#paper)"/>
         <!-- Pliegues inferiores -->
         <path d="M2 198 L132 104 M298 198 L168 104" stroke="#D9CCB0" stroke-width="1.2" fill="none"/>
-        <path d="M2 196 L150 118 L298 196" fill="#F3EBDC" opacity="0.6"/>
+        <path d="M2 196 L150 118 L298 196" fill="#F2E9D8"/>
         <!-- Solapa superior con forro dorado -->
         <path d="M2 8 Q2 2 8 2 H292 Q298 2 298 8 L156 112 Q150 116 144 112 Z" fill="url(#flap)"/>
         <path d="M14 8 H286 L152 104 Q150 106 148 104 Z" fill="none" stroke="url(#goldGrad)" stroke-width="1.4"/>
         <path d="M2 8 Q2 2 8 2 H292 Q298 2 298 8 L156 112 Q150 116 144 112 Z" fill="none" stroke="#D9CCB0" stroke-width="1"/>
         <!-- Filete dorado del sobre -->
-        <rect x="8" y="8" width="284" height="184" rx="3" fill="none" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.6"/>
+        <rect x="8" y="8" width="284" height="184" rx="3" fill="none" stroke="#DCC79E" stroke-width="0.8"/>
 
         <!-- Sello de lacre dorado -->
         <g transform="translate(150 112)">
           <path d="M0 -33 C9 -35 14 -28 22 -26 C30 -23 33 -15 33 -7 C36 1 35 9 30 16 C26 24 19 29 10 32 C2 35 -7 34 -15 31 C-24 27 -30 20 -33 11 C-36 2 -35 -7 -31 -15 C-27 -24 -20 -30 -11 -33 C-7 -34 -4 -33 0 -33 Z" fill="url(#seal)"/>
-          <circle r="24" fill="none" stroke="#F6EBCF" stroke-width="0.9" opacity="0.75"/>
-          <circle r="20.5" fill="none" stroke="#7A5A28" stroke-width="0.5" opacity="0.5"/>
+          <circle r="24" fill="none" stroke="#EEDDB6" stroke-width="0.9"/>
+          <circle r="20.5" fill="none" stroke="#A07F48" stroke-width="0.5"/>
           <text y="10" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="28" font-weight="600" fill="#5E441C" style="font-variant-numeric: lining-nums">25</text>
         </g>
       </svg>
