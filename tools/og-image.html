@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8" />
+<!-- Plantilla de la imagen de vista previa (1200×630) que muestra WhatsApp al compartir el enlace.
+     Se convierte a assets/og-image.png con tools/generar-og.ps1 -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Great+Vibes&family=Montserrat:wght@500&display=block" rel="stylesheet" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    display: grid; place-items: center; text-align: center;
+    color: #FAF6EE; font-family: Montserrat, sans-serif;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(212,181,122,.22), transparent 50%),
+      radial-gradient(ellipse at 50% 130%, #1B3560, transparent 60%),
+      #0B1A33;
+    position: relative;
+  }
+  body::before { content: ""; position: absolute; inset: 22px; border: 2px solid rgba(212,181,122,.55); }
+  body::after  { content: ""; position: absolute; inset: 32px; border: 1px solid rgba(212,181,122,.25); }
+  .eyebrow { font-size: 22px; letter-spacing: 10px; text-transform: uppercase; color: #D4B57A; }
+  .num {
+    font-family: "Cormorant Garamond", serif; font-size: 120px; line-height: 1; margin: 14px 0 0;
+    background: linear-gradient(110deg,#A8864A 10%,#F6EBCF 45%,#D4B57A 60%,#A8864A 90%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .names { font-family: "Great Vibes", cursive; font-size: 108px; line-height: 1.15; color: #EAD9B0; }
+  .names span { color: #D4B57A; font-size: .8em; }
+  .date { margin-top: 10px; font-family: "Cormorant Garamond", serif; font-size: 36px; letter-spacing: 6px;
+          display: inline-block; padding: 6px 28px; border-top: 2px solid #D4B57A; border-bottom: 2px solid #D4B57A; }
+</style>
+</head>
+<body>
+  <div>
+    <p class="eyebrow">Bodas de Plata</p>
+    <p class="num">25</p>
+    <p class="names">Eloísa <span>&amp;</span> José Luis</p>
+    <p class="date">28 · 12 · 2026</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sobre · Bodas de Plata · Eloísa & José Luis</title>
+  <!--
+    ==========================================================================
+    SOBRE DIGITAL (PDF vertical para celular, 108 × 192 mm = proporción 9:16)
+    --------------------------------------------------------------------------
+    CÓMO EXPORTAR A PDF:
+      Opción A (automática, recomendada):
+        powershell -ExecutionPolicy Bypass -File sobre\generar-pdf.ps1 -Url "https://tu-sitio/"
+      Opción B (manual, Chrome/Edge):
+        1. Abre este archivo agregando ?url=https://tu-sitio/ al final de la dirección,
+           o cambia DEFAULT_URL más abajo.
+        2. Ctrl + P → Destino: "Guardar como PDF" → Márgenes: Ninguno
+           → Más opciones: activa "Gráficos de fondo" y desactiva "Encabezados y pies".
+      El botón "Abrir invitación" queda como enlace clicable dentro del PDF.
+    ==========================================================================
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@400;500;600&display=block" rel="stylesheet" />
+
+  <style>
+    /* Paleta compartida con la invitación web */
+    :root {
+      --navy-900: #0B1A33;
+      --navy-700: #1B3560;
+      --ivory: #FAF6EE;
+      --ivory-200: #F1E9D8;
+      --gold: #D4B57A;
+      --gold-lt: #EAD9B0;
+      --gold-dk: #8C6A33;
+      --muted: #AEB6C6;
+    }
+
+    /* Tamaño de página exacto para el PDF */
+    @page { size: 108mm 192mm; margin: 0; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body {
+      font-family: "Montserrat", Arial, sans-serif;
+      background: #2B2F36;            /* solo visible en pantalla, fuera de la página */
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px 0;
+    }
+
+    /* ---------- La "hoja" del PDF ---------- */
+    .page {
+      position: relative;
+      width: 108mm;
+      height: 192mm;
+      overflow: hidden;
+      color: var(--ivory);
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 46%, rgba(212, 181, 122, 0.18), transparent 48%),
+        radial-gradient(ellipse at 50% 115%, var(--navy-700), transparent 62%),
+        var(--navy-900);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 13mm 8mm 10mm;
+    }
+    /* Doble marco dorado */
+    .page::before, .page::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+    .page::before { inset: 4mm; border: 0.35mm solid rgba(212, 181, 122, 0.55); }
+    .page::after  { inset: 5.4mm; border: 0.2mm solid rgba(212, 181, 122, 0.25); }
+
+    /* Esquinas ornamentales */
+    .corner { position: absolute; width: 9mm; height: 9mm; color: var(--gold); }
+    .corner svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.2; }
+    .corner--tl { top: 2.6mm; left: 2.6mm; }
+    .corner--tr { top: 2.6mm; right: 2.6mm; transform: scaleX(-1); }
+    .corner--bl { bottom: 2.6mm; left: 2.6mm; transform: scaleY(-1); }
+    .corner--br { bottom: 2.6mm; right: 2.6mm; transform: scale(-1, -1); }
+
+    .eyebrow {
+      font-size: 2.5mm;
+      font-weight: 500;
+      letter-spacing: 1.1mm;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .tagline {
+      margin-top: 2.5mm;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-style: italic;
+      font-size: 4.6mm;
+      color: var(--ivory);
+    }
+    .names {
+      margin-top: 1mm;
+      font-family: "Great Vibes", cursive;
+      font-size: 12.5mm;
+      line-height: 1.15;
+      color: var(--gold-lt);
+    }
+    .names .amp { color: var(--gold); font-size: 0.8em; }
+
+    /* ---------- Sobre ---------- */
+    .envelope {
+      display: block;
+      width: 84mm;
+      margin: 7mm auto 0;
+      text-decoration: none;
+      filter: drop-shadow(0 4mm 6mm rgba(0, 0, 0, 0.45));
+    }
+    .envelope svg { width: 100%; height: auto; display: block; }
+
+    .date {
+      margin-top: 7mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3mm;
+      font-size: 2.3mm;
+      letter-spacing: 0.8mm;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .date strong {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 600;
+      font-size: 5.4mm;
+      letter-spacing: 0.6mm;
+      color: var(--ivory);
+      padding: 1.2mm 3.5mm;
+      border-top: 0.3mm solid var(--gold);
+      border-bottom: 0.3mm solid var(--gold);
+    }
+    .place {
+      margin-top: 2.5mm;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 3.9mm;
+      color: var(--ivory);
+    }
+
+    .divider { margin: 6mm auto 0; width: 34mm; height: 3mm; position: relative;
+      background: linear-gradient(var(--gold), var(--gold)) center / 100% 0.25mm no-repeat; opacity: 0.8; }
+    .divider span { position: absolute; left: 50%; top: 50%; width: 2.2mm; height: 2.2mm;
+      background: var(--navy-900); border: 0.25mm solid var(--gold); transform: translate(-50%, -50%) rotate(45deg); }
+    .phrase {
+      margin-top: 4.5mm;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-style: italic;
+      font-size: 5mm;
+      line-height: 1.35;
+      color: var(--gold-lt);
+    }
+    .date, .phrase { font-variant-numeric: lining-nums; }
+
+    /* ---------- Botón (enlace clicable en el PDF) ---------- */
+    .cta {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 2.5mm;
+      padding: 3.6mm 8mm;
+      border-radius: 20mm;
+      background: linear-gradient(135deg, var(--gold-lt), var(--gold) 55%, #C3A062);
+      color: var(--navy-900);
+      font-size: 3mm;
+      font-weight: 600;
+      letter-spacing: 0.7mm;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow: 0 2mm 5mm rgba(212, 181, 122, 0.35);
+    }
+    .cta svg { width: 4mm; height: 4mm; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .hint {
+      margin-top: 3mm;
+      font-size: 2.2mm;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    @media print {
+      body { background: none; padding: 0; display: block; min-height: 0; }
+      .page { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Esquinas -->
+    <span class="corner corner--tl"><svg viewBox="0 0 30 30"><path d="M2 28V8a6 6 0 0 1 6-6h20M7 28V13a6 6 0 0 1 6-6h15"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg></span>
+    <span class="corner corner--tr"><svg viewBox="0 0 30 30"><path d="M2 28V8a6 6 0 0 1 6-6h20M7 28V13a6 6 0 0 1 6-6h15"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg></span>
+    <span class="corner corner--bl"><svg viewBox="0 0 30 30"><path d="M2 28V8a6 6 0 0 1 6-6h20M7 28V13a6 6 0 0 1 6-6h15"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg></span>
+    <span class="corner corner--br"><svg viewBox="0 0 30 30"><path d="M2 28V8a6 6 0 0 1 6-6h20M7 28V13a6 6 0 0 1 6-6h15"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg></span>
+
+    <p class="eyebrow">Bodas de Plata · 25 años</p>
+    <p class="tagline">Tienes una invitación especial de</p>
+    <p class="names">Eloísa <span class="amp">&amp;</span> José Luis</p>
+
+    <!-- Sobre cerrado con sello de lacre (todo el sobre también es un enlace) -->
+    <a class="envelope js-link" href="#" aria-label="Abrir invitación">
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#FBF8F1"/>
+            <stop offset="1" stop-color="#EFE5D1"/>
+          </linearGradient>
+          <linearGradient id="flap" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F6EFE1"/>
+            <stop offset="1" stop-color="#E6DAC0"/>
+          </linearGradient>
+          <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#F1E2BE"/>
+            <stop offset="0.5" stop-color="#D4B57A"/>
+            <stop offset="1" stop-color="#9C7B42"/>
+          </linearGradient>
+          <radialGradient id="seal" cx="0.4" cy="0.35" r="0.7">
+            <stop offset="0" stop-color="#F3E4C0"/>
+            <stop offset="0.55" stop-color="#C9A563"/>
+            <stop offset="1" stop-color="#8C6A33"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Cuerpo del sobre -->
+        <rect x="2" y="2" width="296" height="196" rx="6" fill="url(#paper)"/>
+        <!-- Pliegues inferiores -->
+        <path d="M2 198 L132 104 M298 198 L168 104" stroke="#D9CCB0" stroke-width="1.2" fill="none"/>
+        <path d="M2 196 L150 118 L298 196" fill="#F3EBDC" opacity="0.6"/>
+        <!-- Solapa superior con forro dorado -->
+        <path d="M2 8 Q2 2 8 2 H292 Q298 2 298 8 L156 112 Q150 116 144 112 Z" fill="url(#flap)"/>
+        <path d="M14 8 H286 L152 104 Q150 106 148 104 Z" fill="none" stroke="url(#goldGrad)" stroke-width="1.4"/>
+        <path d="M2 8 Q2 2 8 2 H292 Q298 2 298 8 L156 112 Q150 116 144 112 Z" fill="none" stroke="#D9CCB0" stroke-width="1"/>
+        <!-- Filete dorado del sobre -->
+        <rect x="8" y="8" width="284" height="184" rx="3" fill="none" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.6"/>
+
+        <!-- Sello de lacre dorado -->
+        <g transform="translate(150 112)">
+          <path d="M0 -33 C9 -35 14 -28 22 -26 C30 -23 33 -15 33 -7 C36 1 35 9 30 16 C26 24 19 29 10 32 C2 35 -7 34 -15 31 C-24 27 -30 20 -33 11 C-36 2 -35 -7 -31 -15 C-27 -24 -20 -30 -11 -33 C-7 -34 -4 -33 0 -33 Z" fill="url(#seal)"/>
+          <circle r="24" fill="none" stroke="#F6EBCF" stroke-width="0.9" opacity="0.75"/>
+          <circle r="20.5" fill="none" stroke="#7A5A28" stroke-width="0.5" opacity="0.5"/>
+          <text y="10" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="28" font-weight="600" fill="#5E441C" style="font-variant-numeric: lining-nums">25</text>
+        </g>
+      </svg>
+    </a>
+
+    <div class="date">
+      <span>Lunes</span>
+      <strong>28 · 12 · 2026</strong>
+      <span>14:00 h</span>
+    </div>
+    <p class="place">San Lorenzo Cacaotepec, Oaxaca</p>
+
+    <div class="divider" aria-hidden="true"><span></span></div>
+    <p class="phrase">“¡25 años de unión<br/>merecen celebrarse!”</p>
+
+    <a class="cta js-link" href="#">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      Abrir invitación
+    </a>
+    <p class="hint">Toca el botón para ver todos los detalles<br/>y confirmar tu asistencia.</p>
+  </div>
+
+  <script>
+    /* URL de la invitación publicada.
+       Cámbiala aquí o pásala en la dirección: sobre.html?url=https://tu-sitio/ */
+    var DEFAULT_URL = "https://azizzt.github.io/bodas-de-plata/";
+
+    var param = new URLSearchParams(location.search).get("url");
+    var url = /^https?:\/\//i.test(param || "") ? param : DEFAULT_URL;
+    document.querySelectorAll(".js-link").forEach(function (a) { a.href = url; });
+  </script>
+</body>
+</html>
